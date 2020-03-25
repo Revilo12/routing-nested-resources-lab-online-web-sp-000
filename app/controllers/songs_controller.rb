@@ -15,7 +15,11 @@ class SongsController < ApplicationController
   def show
     if !(@song = Song.find_by(id: params[:id]))
       flash[:alert] = "Song Not Found"
-      redirect_to songs_path
+      if !(@artist = Artist.find_by(id: params[:artist_id]))
+        flash[:alert] = "Artist and Song Not Found"
+        redirect_to songs_path
+      end
+      redirect_to artist_songs_path(@artist)
     end
   end
 
